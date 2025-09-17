@@ -254,15 +254,6 @@ docker compose logs -f db
 
 ---
 
-## Postman Collection
-- File: `postman/GripInvest.postman_collection.json`
-- Import into Postman
-- Set base URL to `http://localhost:4000`
-- Sequence recommendation:
-  1. Auth: signup or login
-  2. Products: list/get; if admin, create/update/delete
-  3. Investments: invest; then GET /api/investments/me for portfolio
-  4. Logs: (optional) /api/logs/me or admin search
 
 ---
 
@@ -294,3 +285,19 @@ Ease of usage
 - Sanitized error handling; avoid exposing stack traces and secrets
 - Profile photo upload via multipart form-data (not URL-based)
 
+## Screenshots
+
+### Home Page
+![Home Page](assets/homepage.png)
+
+### Dashboard
+![Dashboard](assets/dashboard.png)
+
+### Products Page
+![Products](assets/products.png)
+
+### Investment Page
+![Investments](assets/investments.png)
+
+### Admin Dashboard
+![Admin](assets/admin.png)
