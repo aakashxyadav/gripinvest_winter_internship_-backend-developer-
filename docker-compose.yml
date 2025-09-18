@@ -20,6 +20,7 @@ services:
 
   backend:
     build: ./backend
+    image: gripinvest-backend   # ✅ added
     environment:
       NODE_ENV: development
       PORT: 4000
@@ -46,6 +47,7 @@ services:
 
   frontend:
     build: ./frontend
+    image: gripinvest-frontend   # ✅ added
     environment:
       VITE_API_BASE: http://localhost:4000
     depends_on:
