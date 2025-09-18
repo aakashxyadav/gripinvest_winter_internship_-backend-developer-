@@ -83,31 +83,8 @@ CREATE TABLE IF NOT EXISTS wallets (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
--- Migration helpers for existing databases (best effort; ignore errors if column already exists)
--- Users
-ALTER TABLE users ADD COLUMN IF NOT EXISTS first_name VARCHAR(100) NULL AFTER password_hash;
-ALTER TABLE users ADD COLUMN IF NOT EXISTS last_name VARCHAR(100) NULL AFTER first_name;
-ALTER TABLE users MODIFY COLUMN risk_appetite ENUM('low','moderate','high') DEFAULT 'moderate';
-ALTER TABLE users ADD COLUMN IF NOT EXISTS role ENUM('user','admin') DEFAULT 'user' AFTER risk_appetite;
-ALTER TABLE users ADD COLUMN IF NOT EXISTS otp_code VARCHAR(10) AFTER role;
-ALTER TABLE users ADD COLUMN IF NOT EXISTS otp_expires_at DATETIME AFTER otp_code;
-ALTER TABLE users ADD COLUMN IF NOT EXISTS full_name VARCHAR(255) NULL AFTER otp_expires_at;
-ALTER TABLE users ADD COLUMN IF NOT EXISTS phone VARCHAR(30) NULL AFTER full_name;
-ALTER TABLE users ADD COLUMN IF NOT EXISTS profile_photo_url VARCHAR(512) NULL AFTER phone;
-
--- Investment products
-ALTER TABLE investment_products ADD COLUMN IF NOT EXISTS investment_type ENUM('bond','fd','mf','etf','other') NULL AFTER name;
-ALTER TABLE investment_products ADD COLUMN IF NOT EXISTS risk_level ENUM('low','moderate','high') NULL AFTER investment_type;
-ALTER TABLE investment_products ADD COLUMN IF NOT EXISTS annual_yield DECIMAL(5,2) NULL AFTER risk_level;
-ALTER TABLE investment_products MODIFY COLUMN min_investment DECIMAL(12,2) DEFAULT 1000.00;
-ALTER TABLE investment_products MODIFY COLUMN max_investment DECIMAL(12,2) NULL;
-
--- Investments
-ALTER TABLE investments ADD COLUMN IF NOT EXISTS invested_at DATETIME DEFAULT CURRENT_TIMESTAMP AFTER amount;
-ALTER TABLE investments ADD COLUMN IF NOT EXISTS maturity_date DATE NULL AFTER expected_return;
-ALTER TABLE investments MODIFY COLUMN status ENUM('active','matured','cancelled') DEFAULT 'active';
-
--- Transaction logs
-ALTER TABLE transaction_logs ADD COLUMN IF NOT EXISTS http_method ENUM('GET','POST','PUT','DELETE') NULL AFTER endpoint;
-ALTER TABLE transaction_logs ADD COLUMN IF NOT EXISTS status_code INT NULL AFTER http_method;
-ALTER TABLE transaction_logs ADD COLUMN IF NOT EXISTS error_message TEXT NULL AFTER status_code;
+-- NOTE: Migration helpers removed from this init script because some MySQL 8 builds
+-- reject "ALTER TABLE ... ADD COLUMN IF NOT EXISTS" during container init.
+-- For fresh containers, the CREATE TABLE definitions above are sufficient.
+-- If you need to migrate an existing database, run a separate migration script
+-- that uses information_schema checks.

@@ -28,8 +28,22 @@ A full-stack reference implementation of a mini investment platform.
 
 ## Quick Start (Docker)
 
-1) Create an `.env` in the project root (or copy `.env.example`):
+Zero-config (recommended)
+- Prerequisite: Docker Desktop installed and running
+- Clone the repo, then run from the project root:
+```
+docker compose up --build
+```
+- Open:
+  - API: http://localhost:4000/health
+  - Frontend: http://localhost:5173
+- Log in with seeded accounts (see Credentials below).
 
+Optional: Customize via .env
+- Create an `.env` in the project root to override defaults (JWT secret, AI mode, etc.).
+- docker-compose already provides sane defaults; .env is not required for local run.
+
+Example `.env` (optional):
 ```
 # Backend
 JWT_SECRET=supersecretjwt
@@ -53,19 +67,20 @@ MYSQL_DATABASE=grip_invest
 VITE_API_BASE=http://localhost:4000
 ```
 
-2) Start services:
-```
-docker compose up --build
-```
-
-3) Open:
-- API Health: http://localhost:4000/health
-- Frontend: http://localhost:5173
-
-4) Seed DB (auto on first run). To re-seed:
+Re-seed DB (if needed)
 ```
 docker compose exec backend node ./src/utils/seed.js --reset
 ```
+
+Tear down & clean volumes (fresh DB)
+```
+docker compose down -v
+```
+
+Troubleshooting
+- Ports in use (4000 or 5173): stop other apps or change the published ports in docker-compose.yml.
+- First run delay: MySQL initializes on first start; backend waits for DB health before starting.
+- Logs: `docker compose logs -f backend|frontend|db`
 
 ---
 
